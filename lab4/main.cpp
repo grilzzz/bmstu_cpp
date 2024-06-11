@@ -1,34 +1,13 @@
 #include <iostream>
 #include <vector>
-#include <stdexcept> // для std::invalid_argument и std::out_of_range
 
 class Fraction {
 public:
     int numerator;
     int denominator;
 
-    Fraction(int num, int den) : numerator(num), denominator(den) {
-        if (den == 0) {
-            throw std::invalid_argument("Denominator cannot be zero");
-        }
-        reduce();
-    }
+    Fraction(int num, int den) : numerator(num), denominator(den) {}
 
-    void reduce() {
-        int gcd = gcdEuclid(numerator, denominator);
-        numerator /= gcd;
-        denominator /= gcd;
-    }
-
-private:
-    int gcdEuclid(int a, int b) const {
-        while (b != 0) {
-            int temp = b;
-            b = a % b;
-            a = temp;
-        }
-        return a;
-    }
 };
 
 
@@ -44,9 +23,6 @@ public:
     }
 
     T& operator[](size_t index) {
-        if (index >= fractions.size()) {
-            throw std::out_of_range("Index out of range");
-        }
         return fractions[index];
     }
 
@@ -62,12 +38,12 @@ public:
     public:
         GcdIterator(FractionContainer<T>& cont, size_t idx) : container(cont), index(idx) {}
 
-        GcdIterator& operator++() {
+        GcdIterator operator++() {
             ++index;
             return *this;
         }
 
-        bool operator!=(const GcdIterator& other) const {
+        bool operator!=(const GcdIterator other) const {
             return index != other.index;
         }
 
@@ -81,11 +57,10 @@ public:
             int oldGcd = gcdEuclid(fraction.numerator, fraction.denominator);
             fraction.numerator = (fraction.numerator / oldGcd) * newGcd;
             fraction.denominator = (fraction.denominator / oldGcd) * newGcd;
-            fraction.reduce();
         }
 
     private:
-        int gcdEuclid(int a, int b) const {
+        int gcdEuclid(int a, int b) {
             while (b != 0) {
                 int temp = b;
                 b = a % b;
@@ -108,30 +83,24 @@ public:
 
 
 int main() {
-    try {
-        FractionContainer<Fraction> container;
-        container.add(Fraction(4, 8));
-        container.add(Fraction(2, 3));
-        container.add(Fraction(10, 15));
+    FractionContainer<Fraction> container;
+    container.add(Fraction(4, 8));
+    container.add(Fraction(2, 3));
+    container.add(Fraction(10, 15));
 
 
-        std::cout << 4 << std::endl << 1 << std::endl << 5 << std::endl;
+    for (int i = 0; i < container.size(); i++) {
+        std::cout << container[i].denominator << std::endl;
+    }
 
-        // for (auto it = container.begin(); it != container.end(); ++it) {
-        //     std::cout << *it << std::endl;
-        // }
+    for (auto it = container.begin(); it != container.end(); ++it) {
+        it.setGcd(1);
+    }
 
-        for (auto it = container.begin(); it != container.end(); ++it) {
-            it.setGcd(1);
-        }
-
-        std::cout << "\nFractions after setting new nod:" << std::endl;
-        for (size_t i = 0; i < container.size(); ++i) {
-            Fraction& frac = container[i];
-            std::cout << frac.numerator << "/" << frac.denominator << std::endl;
-        }
-    } catch (const std::exception& ex) {
-        std::cerr << "Error: " << ex.what() << std::endl;
+    std::cout << "\nFractions after setting new nod:" << std::endl;
+    for (size_t i = 0; i < container.size(); ++i) {
+        Fraction& frac = container[i];
+        std::cout << frac.numerator << "/" << frac.denominator << std::endl;
     }
 
     return 0;

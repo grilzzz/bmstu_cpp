@@ -4,20 +4,48 @@
 
 
 TicTacToe::TicTacToe(int n) : size(n) {
-    board = new char*[size];
-    for (int i = 0; i < size; ++i) {
-        board[i] = new char[size];
-        std::memset(board[i], '.', size); 
+    this->board = new char*[size];
+    for (int i = 0; i < size; i++) {
+        this->board[i] = new char[size];
+        for (int j = 0; j < size; j++) {
+            this->board[i][j] = (char)".";
+        }
     }
+
+
+
+    // board = new char*[size];
+    // for (int i = 0; i < size; i++) {
+    //     board[i] = new char[size];
+    //     for (int j = 0; j < size; j++) {
+    //         board[i][j] = (char)".";
+    //     }
+    // }
+
+    // board = new char*[size];
+    // for (int i = 0; i < size; ++i) {
+    //     board[i] = new char[size];
+    //     std::memset(board[i], '.', size); 
+    // }
 }
 
 
 TicTacToe::TicTacToe(const TicTacToe& other) : size(other.size) {
-    board = new char*[size];
-    for (int i = 0; i < size; ++i) {
-        board[i] = new char[size];
-        std::memcpy(board[i], other.board[i], size);
-    }
+    this->board = new char*[size];
+    for (int i = 0; i < size; i++) {
+        this->board[i] = new char[size];
+        for (int j = 0; j < size; j++) {
+            this->board[i][j] = other.board[i][j];
+        }
+    } 
+
+
+
+    // board = new char*[size];
+    // for (int i = 0; i < size; ++i) {
+    //     board[i] = new char[size];
+    //     std::memcpy(board[i], other.board[i], size);
+    // }
 }
 
 

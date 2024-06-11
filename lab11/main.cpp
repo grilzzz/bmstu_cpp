@@ -15,7 +15,7 @@ int main() {
     int boardSize = 3; 
     TicTacToe game(boardSize);
 
-    std::cout << "size: " << game.getSize() << "x" << game.getSize() << std::endl << std::endl;
+    std::cout << "size: " << game.getSize() << std::endl << std::endl;
 
     game(0,0) = 'X';
     game(1,1) = 'O';
